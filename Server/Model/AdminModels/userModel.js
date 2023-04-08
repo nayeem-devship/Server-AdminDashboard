@@ -8,6 +8,7 @@ const addUser = new Schema({
   userName: String,
   password: String,
   cnfPassword: String,
+  status: String,
 },
 {timestamps: true}
 );

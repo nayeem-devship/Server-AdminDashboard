@@ -15,6 +15,7 @@ export async function addUser(req, res, next) {
       userName: data.userName,
       password: bcrypt.hashSync(password, salt),
       cnfPassword: data.cnfPassword,
+      status: data.status,
     };
     if(existUser){
       res.status(409).json({
@@ -66,11 +67,12 @@ export async function updateUser(req, res, next) {
     const data = req.body;
     const id = req.params.id;
     const details = {
-      irstName: data.firstName,
+      firstName: data.firstName,
       lastName: data.lastName,
       userName: data.userName,
       password: data.password,
       cnfPassword: data.cnfPassword,
+      status: data.status,
     };
     const updateUser = await UserDb.findByIdAndUpdate(id, details, {
       new: true,
