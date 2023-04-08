@@ -10,7 +10,6 @@ const addUser = new Schema({
   cnfPassword: String,
   status: String,
 },
-{timestamps: true}
 );
 
 addUser.set("autoIndex", true);

@@ -1,14 +1,13 @@
 import UserDb from "../../Model/AdminModels/userModel.js";
-import UserLoginDb from "../../Model/AdminModels/userLoginModel.js";
 import bcrypt from "bcryptjs";
 
 export async function addUser(req, res, next) {
   try {
     const data = req.body;
-    const userName = data.userName;
+    // const userName = data.userName;
     const salt = await bcrypt.genSaltSync(10);
     const password = await data.password;
-    const existUser = await UserDb.findOne({ userName: data.userName})
+    const existUser = await UserDb.findOne({ userName: data.userName });
     const details = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -17,18 +16,18 @@ export async function addUser(req, res, next) {
       cnfPassword: data.cnfPassword,
       status: data.status,
     };
-    if(existUser){
+    if (existUser) {
       res.status(409).json({
-        message:"user already exist",
-        data:existUser,
-      })
-    } else{
+        message: "user already exist",
+        data: existUser,
+      });
+    } else {
       const createUser = await UserDb.create(details);
-      await UserLoginDb.create({
-        userName: data.userName,
-        password:bcrypt.hashSync(password, salt),
-        userId: createUser._id,
-      })
+      console.log("createUser@", createUser);
+      res.status(200).json({
+        message: "User Created SuccessFully",
+        data: createUser,
+      });
     }
   } catch (err) {
     console.log(err);
@@ -66,11 +65,13 @@ export async function updateUser(req, res, next) {
   try {
     const data = req.body;
     const id = req.params.id;
+    const salt = await bcrypt.genSaltSync(10);
+    const password = await data.password;
     const details = {
       firstName: data.firstName,
       lastName: data.lastName,
       userName: data.userName,
-      password: data.password,
+      password: bcrypt.hashSync(password, salt),
       cnfPassword: data.cnfPassword,
       status: data.status,
     };
