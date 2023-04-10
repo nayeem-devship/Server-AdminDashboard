@@ -16,8 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join("./", "/public")));
 
-import User from "./Server/Routes/AdminRoutes/userRoutes.js"
+import User from "./Server/Routes/AdminRoutes/userRoutes.js";
+import SubUser from "./Server/Routes/AdminRoutes/subUsersRoute.js";
 
-app.use("/user", User)
+app.use("/user", User);
+app.use("/subUsers", SubUser);
 
 export default app;

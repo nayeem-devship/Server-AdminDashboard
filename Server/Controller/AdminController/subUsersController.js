@@ -1,13 +1,13 @@
-import UserLoginDb from "../../Model/AdminModels/userLoginModel.js";
-import UserDb from "../../Model/AdminModels/userModel.js";
+import SubUserDb from "../../Model/AdminModels/subUsersModel.js";
 import bcrypt from "bcryptjs";
+import UserLoginDb from "../../Model/AdminModels/userLoginModel.js";
 
-export async function addUser(req, res, next) {
+export async function addSubUser(req, res, next) {
   try {
     const data = req.body;
     const salt = await bcrypt.genSaltSync(10);
     const password = await data.password;
-    const existUser = await UserDb.findOne({ userName: data.userName });
+    const existUser = await SubUserDb.findOne({ userName: data.userName });
     const details = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -22,7 +22,7 @@ export async function addUser(req, res, next) {
         data: existUser,
       });
     } else {
-      const createUser = await UserDb.create(details);
+      const createUser = await SubUserDb.create(details);
       await UserLoginDb.create({
         userName: data.userName,
         password: bcrypt.hashSync(password, salt),
@@ -39,9 +39,9 @@ export async function addUser(req, res, next) {
   }
 }
 
-export async function getUser(req, res, next) {
+export async function getSubUser(req, res, next) {
   try {
-    const getUser = await UserDb.find();
+    const getUser = await SubUserDb.find();
     res.status(200).json({
       message: "get Successfully",
       data: getUser,
@@ -51,12 +51,12 @@ export async function getUser(req, res, next) {
   }
 }
 
-export async function deleteUser(req, res, next) {
+export async function deleteSubUser(req, res, next) {
   try {
     const data = req.params;
     const UserListId = data.id;
     const userId = data.userId;
-    const deleteUser = await UserDb.findByIdAndDelete(UserListId);
+    const deleteUser = await SubUserDb.findByIdAndDelete(UserListId);
     await UserLoginDb(userId);
     res.status(200).json({
       message: "Deleted Successfully",
@@ -67,7 +67,7 @@ export async function deleteUser(req, res, next) {
   }
 }
 
-export async function updateUser(req, res, next) {
+export async function updateSubUser(req, res, next) {
   try {
     const data = req.body;
     const id = req.params.id;
@@ -86,7 +86,7 @@ export async function updateUser(req, res, next) {
       userName: data.userName,
       password: bcrypt.hashSync(password, salt),
     };
-    const updateUser = await UserDb.findByIdAndUpdate(id, details, {
+    const updateUser = await SubUserDb.findByIdAndUpdate(id, details, {
       new: true,
     });
     await UserLoginDb.findByIdAndUpdate(userId, LoginDetails, {

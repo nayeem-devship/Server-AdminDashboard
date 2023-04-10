@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
 import { generateToken } from "../../MiddleWare/auth.js";
-import UserDb from "../../Model/AdminModels/userModel.js";
+import UserLoginDb from "../../Model/AdminModels/userLoginModel.js";
 
 export async function Login(req, res, next) {
   try {
     const data = req.body;
-    const existUser = await UserDb.findOne({
+    const existUser = await UserLoginDb.findOne({
       userName: data.userName,
     });
     if (existUser) {
