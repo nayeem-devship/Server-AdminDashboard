@@ -25,9 +25,9 @@ export async function addUser(req, res, next) {
       const createUser = await UserDb.create(details);
       await UserLoginDb.create({
         userName: data.userName,
-        password: bcrypt.hashSync(password, salt),
+        password: bcrypt.hashSync(password,salt),
         userId: createUser._id,
-      });
+      })
       res.status(200).json({
         message: "User Created SuccessFully",
         data: createUser,
@@ -57,7 +57,7 @@ export async function deleteUser(req, res, next) {
     const UserListId = data.id;
     const userId = data.userId;
     const deleteUser = await UserDb.findByIdAndDelete(UserListId);
-    await UserLoginDb(userId);
+    await UserLoginDb(userId)
     res.status(200).json({
       message: "Deleted Successfully",
       data: deleteUser,
@@ -71,7 +71,6 @@ export async function updateUser(req, res, next) {
   try {
     const data = req.body;
     const id = req.params.id;
-    const userId = req.params.userId;
     const salt = await bcrypt.genSaltSync(10);
     const password = await data.password;
     const details = {
@@ -82,16 +81,14 @@ export async function updateUser(req, res, next) {
       cnfPassword: data.cnfPassword,
       status: data.status,
     };
-    const LoginDetails = {
-      userName: data.userName,
-      password: bcrypt.hashSync(password, salt),
-    };
     const updateUser = await UserDb.findByIdAndUpdate(id, details, {
       new: true,
     });
-    await UserLoginDb.findByIdAndUpdate(userId, LoginDetails, {
-      new: true,
-    });
+    await UserLoginDb.create({
+      userName: data.userName,
+      password: bcrypt.hashSync(password,salt),
+      userId: updateUser._id,
+    })
     res.status(200).json({
       message: "Updated Successfully",
       data: updateUser,

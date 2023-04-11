@@ -13,6 +13,5 @@ router.route("/addUser").post(addUser);
 router.route("/getUser").get(getUser);
 router.route("/deleteUser/:id").delete(deleteUser);
 router.route("/updateUser/:id").put(updateUser);
-router.route("/login").post(Login);
 
 export default router;
