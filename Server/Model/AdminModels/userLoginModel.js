@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const UserLogin = new Schema({
+  role: String,
   userName: String,
   password: String,
   userId: mongoose.Schema.Types.ObjectId,
-},
-);
+});
 
 UserLogin.set("autoIndex", true);
 

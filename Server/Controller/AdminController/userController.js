@@ -24,6 +24,7 @@ export async function addUser(req, res, next) {
     } else {
       const createUser = await UserDb.create(details);
       await UserLoginDb.create({
+        role:"user",
         userName: data.userName,
         password: bcrypt.hashSync(password,salt),
         userId: createUser._id,
@@ -85,6 +86,7 @@ export async function updateUser(req, res, next) {
       new: true,
     });
     await UserLoginDb.create({
+      role:"user",
       userName: data.userName,
       password: bcrypt.hashSync(password,salt),
       userId: updateUser._id,

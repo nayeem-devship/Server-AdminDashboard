@@ -24,6 +24,7 @@ export async function addSubUser(req, res, next) {
     } else {
       const createUser = await SubUserDb.create(details);
       await UserLoginDb.create({
+        role: "subUser",
         userName: data.userName,
         password: bcrypt.hashSync(password, salt),
         userId: createUser._id,
@@ -66,32 +67,33 @@ export async function deleteSubUser(req, res, next) {
 }
 
 export async function updateSubUser(req, res, next) {
-    try {
-        const data = req.body;
-        const id = req.params.id;
-        const salt = await bcrypt.genSaltSync(10);
-        const password = await data.password;
-        const details = {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          userName: data.userName,
-          password: bcrypt.hashSync(password, salt),
-          cnfPassword: data.cnfPassword,
-          status: data.status,
-        };
-        const updateUser = await UserDb.findByIdAndUpdate(id, details, {
-          new: true,
-        });
-        await UserLoginDb.create({
-          userName: data.userName,
-          password: bcrypt.hashSync(password,salt),
-          userId: updateUser._id,
-        })
-        res.status(200).json({
-          message: "Updated Successfully",
-          data: updateUser,
-        });
-      } catch (err) {
-        next();
-      }
+  try {
+    const data = req.body;
+    const id = req.params.id;
+    const salt = await bcrypt.genSaltSync(10);
+    const password = await data.password;
+    const details = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      userName: data.userName,
+      password: bcrypt.hashSync(password, salt),
+      cnfPassword: data.cnfPassword,
+      status: data.status,
+    };
+    const updateUser = await UserDb.findByIdAndUpdate(id, details, {
+      new: true,
+    });
+    await UserLoginDb.create({
+      role: "subUser",
+      userName: data.userName,
+      password: bcrypt.hashSync(password, salt),
+      userId: updateUser._id,
+    });
+    res.status(200).json({
+      message: "Updated Successfully",
+      data: updateUser,
+    });
+  } catch (err) {
+    next();
+  }
 }
