@@ -5,7 +5,6 @@ import {
   getUser,
   updateUser,
 } from "../../Controller/AdminController/userController.js";
-import { Login } from "../../Controller/LoginController/LoginController.js";
 
 const router = Router();
 
