@@ -17,7 +17,8 @@ export async function addSubUser(req, res, next) {
       cnfPassword: data.cnfPassword,
       status: data.status,
       UserList: data.UserList,
-      SubUserList:data.SubUserList
+      SubUserList:data.SubUserList,
+      teams:data.teams
     };
     if (existUser) {
       res.status(409).json({
@@ -98,7 +99,8 @@ export async function updateSubUser(req, res, next) {
       cnfPassword: data.cnfPassword,
       status: data.status,
       UserList: data.UserList,
-      SubUserList:data.SubUserList
+      SubUserList:data.SubUserList,
+      teams:data.teams
     };
     const updateUser = await SubUserDb.findByIdAndUpdate(id, details, {
       new: true,

@@ -16,6 +16,9 @@ const subUsers = new Schema({
   SubUserList: {
     type: Boolean,
   },
+  teams: {
+    type: Boolean,
+  },
 });
 
 subUsers.set("autoIndex", true);

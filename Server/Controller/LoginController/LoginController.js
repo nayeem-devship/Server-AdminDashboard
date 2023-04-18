@@ -6,7 +6,6 @@ export async function Login(req, res, next) {
   try {
     const data = req.body;
     const existUser = await UserLoginDb.findOne({
-      email:data.email,
       userName: data.userName,
     });
     if (existUser) {
@@ -17,7 +16,7 @@ export async function Login(req, res, next) {
             generateToken({ userName:existUser.userName }).then((token) => {
               res.status(200).json({
                 message: "user login successfully",
-                email:existUser.email,
+                userName:existUser.userName,
                 data: existUser,
                 token: token,
                 status: "successful",
