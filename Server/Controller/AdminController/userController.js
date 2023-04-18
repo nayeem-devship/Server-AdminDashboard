@@ -11,6 +11,7 @@ export async function addUser(req, res, next) {
     const details = {
       firstName: data.firstName,
       lastName: data.lastName,
+      email:data.email,
       userName: data.userName,
       password: bcrypt.hashSync(password, salt),
       cnfPassword: data.cnfPassword,
@@ -26,6 +27,7 @@ export async function addUser(req, res, next) {
       await UserLoginDb.create({
         role:"user",
         userName: data.userName,
+        email:data.email,
         password: bcrypt.hashSync(password,salt),
         userId: createUser._id,
       })
@@ -77,6 +79,7 @@ export async function updateUser(req, res, next) {
     const details = {
       firstName: data.firstName,
       lastName: data.lastName,
+      email:data.email,
       userName: data.userName,
       password: bcrypt.hashSync(password, salt),
       cnfPassword: data.cnfPassword,
@@ -88,6 +91,7 @@ export async function updateUser(req, res, next) {
     await UserLoginDb.create({
       role:"user",
       userName: data.userName,
+      email:data.email,
       password: bcrypt.hashSync(password,salt),
       userId: updateUser._id,
     })

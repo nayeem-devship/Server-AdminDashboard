@@ -11,10 +11,13 @@ export async function addSubUser(req, res, next) {
     const details = {
       firstName: data.firstName,
       lastName: data.lastName,
+      email:data.email,
       userName: data.userName,
       password: bcrypt.hashSync(password, salt),
       cnfPassword: data.cnfPassword,
       status: data.status,
+      UserList: data.UserList,
+      SubUserList:data.SubUserList
     };
     if (existUser) {
       res.status(409).json({
@@ -25,6 +28,7 @@ export async function addSubUser(req, res, next) {
       const createUser = await SubUserDb.create(details);
       await UserLoginDb.create({
         role: "subUser",
+        email:data.email,
         userName: data.userName,
         password: bcrypt.hashSync(password, salt),
         userId: createUser._id,
@@ -52,6 +56,19 @@ export async function getSubUser(req, res, next) {
   }
 }
 
+export async function getSubUserById(req, res, next){
+  try{
+      const UserId= req.params.id;
+      const getOneSubUserById = await SubUserDb.findById(UserId);
+      res.status(200).json({
+          message:"get successfully",
+          data:getOneSubUserById,
+      });
+  } catch(err){
+      next();
+  }
+}
+
 export async function deleteSubUser(req, res, next) {
   try {
     const data = req.params;
@@ -75,17 +92,21 @@ export async function updateSubUser(req, res, next) {
     const details = {
       firstName: data.firstName,
       lastName: data.lastName,
+      email:data.email,
       userName: data.userName,
       password: bcrypt.hashSync(password, salt),
       cnfPassword: data.cnfPassword,
       status: data.status,
+      UserList: data.UserList,
+      SubUserList:data.SubUserList
     };
-    const updateUser = await UserDb.findByIdAndUpdate(id, details, {
+    const updateUser = await SubUserDb.findByIdAndUpdate(id, details, {
       new: true,
     });
     await UserLoginDb.create({
       role: "subUser",
       userName: data.userName,
+      email:data.email,
       password: bcrypt.hashSync(password, salt),
       userId: updateUser._id,
     });

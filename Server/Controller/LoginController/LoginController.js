@@ -6,6 +6,7 @@ export async function Login(req, res, next) {
   try {
     const data = req.body;
     const existUser = await UserLoginDb.findOne({
+      email:data.email,
       userName: data.userName,
     });
     if (existUser) {
@@ -13,10 +14,10 @@ export async function Login(req, res, next) {
         .compare(data.password, existUser.password)
         .then((checkPassword) => {
           if (checkPassword) {
-            generateToken({ userName: existUser.userName }).then((token) => {
+            generateToken({ userName:existUser.userName }).then((token) => {
               res.status(200).json({
                 message: "user login successfully",
-                userName: existUser.userName,
+                email:existUser.email,
                 data: existUser,
                 token: token,
                 status: "successful",
