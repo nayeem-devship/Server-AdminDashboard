@@ -17,6 +17,7 @@ export async function Login(req, res, next) {
               res.status(200).json({
                 message: "user login successfully",
                 userName:existUser.userName,
+                email:existUser.email,
                 data: existUser,
                 token: token,
                 status: "successful",

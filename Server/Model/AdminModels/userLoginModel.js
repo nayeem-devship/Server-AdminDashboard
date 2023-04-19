@@ -8,6 +8,7 @@ const UserLogin = new Schema({
   email:String,
   password: String,
   userId: mongoose.Schema.Types.ObjectId,
+
 });
 
 UserLogin.set("autoIndex", true);
